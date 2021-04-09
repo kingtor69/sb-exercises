@@ -1,0 +1,24 @@
+# Veggies
+
+kale
+parsnip
+carrot
+lettuce
+
+# Fruits
+
+banana
+orange
+cucumber
+tomato
+
+# Prepared Foods
+pickles
+guacamole
+tortilla chips
+
+# Meals
+
+fish tacos
+spaghetti with meatballs
+peanut butter and jelly sandwich

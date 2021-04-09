@@ -4,4 +4,4 @@
 
 ###exercises
 
-assorted exercises for boot camp
+assorted exercises for boot campvarious exercises for this boot camp
