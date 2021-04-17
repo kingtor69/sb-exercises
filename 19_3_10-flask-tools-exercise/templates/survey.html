@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block tab_title %}Take Our Survey{% endblock %}
+{% block page_nav_name %}Survey{% endblock %}
+{% block header %}{{survey.title}}{% endblock %}
+{% block content %}
+<div class="container">
+  <h2>{{survey.instructions}}</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>question</th>
+        <th>answer</th>
+        {% if columns == 3 %}
+        <th></th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      <form action="POST">
+        {% for question in survey.questions %}
+        <tr>
+          <td>{{question.question}}</td>
+          <td>
+            <select class="form-select" aria-label="select answer">
+              <option selected class="text-muted text-center">---pick one---</option>
+              {% for choice in question.choices %}
+              <option value="{{choice}}">{{choice}}</option>
+              {% endfor %}
+            </select>
+          </td>
+          {% if question.allow_text %}
+          <td>
+          </td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+        <tr>
+          <td colspan="{{columns}}"><button class="btn btn-secondary btn-block">Submit</button></td>
+        </tr>
+      </form>
+    </tbody>
+  </table>
+</div>
+{% endblock %}
