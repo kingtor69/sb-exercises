@@ -1,5 +1,5 @@
-from flask import flask
-import DebugToolbarExtension
+from flask import Flask
+from flask_debugtoolbar import DebugToolbarExtension
 from surveys import satisfaction_survey
 
 app = Flask(__name__)
