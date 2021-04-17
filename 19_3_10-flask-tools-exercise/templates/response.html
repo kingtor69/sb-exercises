@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block tab_title %}Take Our Survey{% endblock %}
+{% block page_nav_name %}Survey{% endblock %}
+{% block header %}{{survey.title}}{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row justify-content-left">
+    <div class="col-md-{{columns * 3}}">
+      <h2 class="bg-secondary">Your Responses</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <table>
+        <thead>
+          <tr>
+            <th class="text-muted">question</th>
+            <th>your answer</th>
+            {% if columns == 3 %}
+            <th>elaboration</th>
+            {% endif %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in range(num_questions) %}
+          <td class="text-muted">{{survey.questions[i].question}} &nbsp;</td>
+          <td>{{responses[i]}} &nbsp;</td>
+          {% if text_responses[i] %}
+          <td>{{text_responses[i]}}</td>
+          {% endif %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row justify-content-left">
+    <div class="col-md-{{columns * 3}}">
+      <h2 class="bg-success">THANK YOU for taking our {{survey.title}}</h2>
+    </div>
+  </div>
+</div>
+{% endblock %}

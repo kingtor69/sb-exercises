@@ -11,26 +11,32 @@
         <th>question</th>
         <th>answer</th>
         {% if columns == 3 %}
-        <th></th>
+        <th>elaboration</th>
+        {% else %}
+        <th class="d-none"></th>
         {% endif %}
       </tr>
     </thead>
     <tbody>
-      <form action="POST">
-        {% for question in survey.questions %}
+      <form action="/response" method="POST">
+        {% for i in range(num_questions) %}
         <tr>
-          <td>{{question.question}}</td>
+          <td>{{survey.questions[i].question}} &nbsp;</td>
           <td>
-            <select class="form-select" aria-label="select answer">
+            <select class="form-select" name="q{{i}}" aria-label="select answer">
               <option selected class="text-muted text-center">---pick one---</option>
-              {% for choice in question.choices %}
+              {% for choice in survey.questions[i].choices %}
               <option value="{{choice}}">{{choice}}</option>
               {% endfor %}
             </select>
           </td>
-          {% if question.allow_text %}
+          {% if survey.questions[i].question.allow_text %}
           <td>
+            <label for="t{{i}}">please elaborate</label>
+            <input type="text" id="t{{i}}" name="t{{i}}">
           </td>
+          {% else %}
+          <td><input type="text" class="d-none" name="t{{i}}"></td>
           {% endif %}
         </tr>
         {% endfor %}
