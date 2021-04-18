@@ -39,7 +39,7 @@ def landing_page():
 
 # doing fine on question/0, but on question/1 it gets a method error
 @app.route(f'/question/<int:question>', methods=['POST', 'GET'])
-def display_next_question(self, question):
+def display_next_question(question):
 	"""process previous page and move on to next question"""
 	print(f'question={question}')
 	where_are_we = len(responses)
