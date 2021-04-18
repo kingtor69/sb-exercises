@@ -1,3 +1,5 @@
+# except as noted, this is starter code provided by Springboard
+
 class Question:
     """Question on a questionnaire."""
 
@@ -48,7 +50,16 @@ personality_quiz = Survey(
     ]
 )
 
+# dummy_survey added to Tor Kingdon
+dummy_survey = Survey(
+    "Title",
+    "Instructions.",
+    [
+        Question("A question")
+    ])
+
 surveys = {
+    "dummy": dummy_survey,
     "satisfaction": satisfaction_survey,
     "personality": personality_quiz,
 }

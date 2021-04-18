@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block tab_title %}Take Our Survey{% endblock %}
+{% block page_nav_name %}Surveys{% endblock %}
+{% block header %}Would you be so kind as to take a survey?{% endblock %}
+{% block content %}
+<div class="container">
+  <table class="table table-striped">
+    <thead>
+      <th>Name</th>
+      <th>Instructions</th>
+      <th>select</th>
+    </thead>
+    <tbody>
+      <form action="/question/0" method="POST">
+        {% for survey in surveys %}
+        {% if not survey == "dummy" %}
+        <tr>
+          <td>{{surveys[survey].title}}</td>
+          <td>{{surveys[survey].instructions}}</td>
+          <td><button class="btn, btn-outline-primary" name="take-this-survey" value="{{survey}}">take this survey</button></td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </form>
+    </tbody>
+  </table>
+</div>
+{% endblock %}
