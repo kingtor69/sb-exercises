@@ -14,10 +14,11 @@
       <form action="/question/0" method="POST">
         {% for survey in surveys %}
         {% if not survey == "dummy" %}
+        <!-- <div class="d-none"><input type="text" value="{{survey}}" name="key"></div> -->
         <tr>
           <td>{{surveys[survey].title}}</td>
           <td>{{surveys[survey].instructions}}</td>
-          <td><button class="btn, btn-outline-primary" name="take-this-survey" value="{{survey}}">take this survey</button></td>
+          <td><button class="btn, btn-outline-primary" name="key" value="{{survey}}">take this survey</button></td>
         </tr>
         {% endif %}
         {% endfor %}

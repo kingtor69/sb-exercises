@@ -1,0 +1,19 @@
+body {
+  background-color: black;
+  color: white;
+}
+
+.error tag {
+  bacground-color: yellow;
+  color: black;
+}
+
+.info tag {
+  background-color: #0f04;
+  color: black;
+}
+
+.thanks tag {
+  background-color: #00800099;
+  color: blue;
+}

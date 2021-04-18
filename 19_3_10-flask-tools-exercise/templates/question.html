@@ -5,6 +5,10 @@
 {% block content %}
 <div class="container">
   <h2>{{survey.instructions}}</h2>
+  <div class="border border-info">
+    <p>delete this div when troubleshooting is over</p>
+    <p>responses so far: {{responses}}</p>
+  </div>
   <table class="table">
     <thead class="table-info">
       <th>#</th>
@@ -32,12 +36,14 @@
           {% endif %}
         </tr>
         <tr>
-          <td></td>
-          <td></td>
+          <td><span class="d-none"><input type="text" value="{{key}}" name="key"></span></td>
+          <td>
+            <!-- <span class="d-none"><input type="number" value="{{question_id}}" name="question"></span> -->
+          </td>
           <td><button class="btn btn-block btn-info">submit</button></td>
         </tr>
+      </form>
     </tbody>
-    </form>
   </table>
 </div>
 {% endblock %}

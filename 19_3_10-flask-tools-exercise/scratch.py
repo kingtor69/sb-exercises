@@ -1,3 +1,12 @@
+# don't think I need this anymore since I redirect to /question/0 in home.html line 14:
+@app.route('/survey-of-surveys', methods=['POST'])
+def go_to_chosen_survey():
+	active_survey = surveys[request.form['take-this-survey']]
+	(num_questions, columns) = survey_size(active_survey)
+	return redirect(f'/question/0')
+
+
+
 # this was a misguided idea, I think
 for i in range(num_questions):
 	@app.route(/question/{i})

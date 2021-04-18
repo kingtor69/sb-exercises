@@ -14,7 +14,7 @@
   <!-- bootstrap -->
   <link rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="fontawesome-free-5.15.2-web/css/all.css">
+  <link rel="stylesheet" href="static/fontawesome-free-5.15.2-web/css/all.css">
   <!-- static style -->
   <link rel="stylesheet" href="static/style.css">
 </head>
@@ -44,6 +44,13 @@
     <div class="row justify-content-left">
       <div class="col-md-9">
         <h1 class="text-center">{% block header %}{% endblock %}</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <tag class="{{category}}">{{message}}</tag>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
       </div>
     </div>
     {% block content %}
