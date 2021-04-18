@@ -1,20 +1,21 @@
 {% extends 'base.html' %}
 {% block tab_title %}Take Our Survey{% endblock %}
-{% block page_nav_name %}Survey{% endblock %}
+<!-- {% block staticroute %}./{% endblock %} -->
 {% block header %}{{survey.title}}{% endblock %}
 {% block content %}
 <div class="container">
-  <div class="row justify-content-left">
-    <div class="col-md-{{columns * 3}}">
-      <h2 class="bg-secondary">Your Responses</h2>
+  <div class="row">
+    <!-- <div class="col-md-{{columns * 3}}"> -->
+    <div class="col">
+      <h2 class="bg-secondary rounded p-1 pl-2">Your Responses</h2>
     </div>
   </div>
   <div class="row">
     <div class="col">
-      <table>
+      <table class="table table-dark table-striped rounded">
         <thead>
           <tr>
-            <th class="text-muted">question</th>
+            <th class="text-primary">question</th>
             <th>your answer</th>
             {% if columns == 3 %}
             <th>elaboration</th>
@@ -23,10 +24,15 @@
         </thead>
         <tbody>
           {% for i in range(num_questions) %}
-          <td class="text-muted">{{survey.questions[i].question}} &nbsp;</td>
-          <td>{{responses[i]}} &nbsp;</td>
-          {% if text_responses[i] %}
-          <td>{{text_responses[i]}}</td>
+          <td class="text-primary">{{survey.questions[i].question}} &nbsp;</td>
+          {% if types[i] == list %}
+          <td>{{responses[i][0]}} &nbsp;</td>
+          <td>{{responses[i][1]}}</td>
+          {% else %}
+          <td>{{responses[i]}}</td>
+          {% if columns == 3 %}
+          <td></td>
+          {% endif %}
           {% endif %}
           </tr>
           {% endfor %}
@@ -34,9 +40,17 @@
       </table>
     </div>
   </div>
-  <div class="row justify-content-left">
-    <div class="col-md-{{columns * 3}}">
-      <h2 class="bg-success">THANK YOU for taking our {{survey.title}}</h2>
+  <div class="row">
+    <!-- <div class="col-md-{{columns * 3}}"> -->
+    <div class="col">
+      <h2 class="bg-success border-rounded p-2">THANK YOU for taking our {{survey.title}}</h2>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-8 col-md-6 col-lg-4">
+      <form action="/">
+        <button class="btn btn-block btn-outline-primary text-primary rounded">take another survey</button>
+      </form>
     </div>
   </div>
 </div>

@@ -13,21 +13,19 @@
   <link rel="shortcut icon" type="image/png" href="images/tor-headshot-2019-square.jpg">
   <!-- bootstrap -->
   <link rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="static/fontawesome-free-5.15.2-web/css/all.css">
   <!-- static style -->
-  <link rel="stylesheet" href="static/style.css">
+  <link rel="stylesheet" href="{% block staticroute %}{% endblock %}static/style.css">
 </head>
 
 <body>
   <div class="container-fluid">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
-      <a class="navbar-brand" href="#">{% block page_nav_name %}{% endblock %}</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top d-none">
+      <a class="navbar-brand" href="home.html">Surveys</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
+        <!--         <ul class="navbar-nav mr-auto">
           {% block nav_items %}{% endblock %}
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="#"></a>
@@ -36,24 +34,28 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">back to top</a>
           </div>
-        </ul>
+        </ul> -->
       </div>
     </nav>
   </div>
   <div class="container">
-    <div class="row justify-content-left">
-      <div class="col-md-9">
+    <div class="row justify-content-center">
+      <div class="col text-center p-1 m-1 mt-3">
         <h1 class="text-center">{% block header %}{% endblock %}</h1>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        {% for category, message in messages %}
-        <tag class="{{category}}">{{message}}</tag>
+      </div>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="row justify-content-center">
+      {% for category, message in messages %}
+      <div class="col text-center">
+        <tag class="{{category}} pl-2 pr-2">{{message}}</tag>
         {% endfor %}
         {% endif %}
         {% endwith %}
       </div>
+      {% block content %}
     </div>
-    {% block content %}
     {% endblock %}
   </div>
   <!-- boostrap scripts -->
