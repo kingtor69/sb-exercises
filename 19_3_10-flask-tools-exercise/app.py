@@ -37,8 +37,27 @@ def landing_page():
 	
 	return render_template('home.html', surveys = surveys)
 
+# if we're GETting a request, it's not from our forms
+@app.route('/question/<url_pt2>')
+def this_is_not_my_beautiful_page(url_pt2):
+	if url_pt2.isnumeric():
+		where_are_we = len(response)
+		question = int.url_pt2
+		if question == where_are_we:
+			try:
+				return render_template('question.html', question_id = (question + 1), survey = active_survey, key = survey_key, columns = columns)
+			except: 
+				flash("insuffienct data to continue", "error")
+				flash("please choose a survey", "info")
+				return redirect('/')
+
+	flash("bad url entered", "error")
+	flash("please choose a survey", "info")
+	return redirect('/')
+	
+
 # doing fine on question/0, but on question/1 it gets a method error
-@app.route(f'/question/<int:question>', methods=['POST', 'GET'])
+@app.route('/question/<int:question>', methods=['POST'])
 def display_next_question(question):
 	"""process previous page and move on to next question"""
 	print(f'question={question}')
