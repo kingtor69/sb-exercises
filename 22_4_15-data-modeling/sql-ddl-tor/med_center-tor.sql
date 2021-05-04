@@ -2,48 +2,74 @@
 -- Link to schema: https://app.quickdatabasediagrams.com/#/d/u7zvwk
 -- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
 
--- I didn't understand a lot of the way this output, so I edited it heavily
+DROP DATABASE IF EXISTS torslist;
 
-DROP DATABASE IF EXISTS med_center;
+CREATE DATABASE torslist;
 
-CREATE DATABASE med_center;
+\c torslist
 
-\c med_center
+
 
 CREATE TABLE "doctors" (
-    "id" SERIAL PRIMARY KEY  NOT NULL,
+    "id" INT   NOT NULL,
     "last_name" TEXT   NOT NULL,
     "first_name" TEXT   NOT NULL,
-    "speciality" TEXT  NOT NULL  DEFAULT 'General Practice'
+    "speciality" TEXT  NOT NULL  DEFAULT,
+    CONSTRAINT "pk_doctors" PRIMARY KEY (
+        "id"
+     )
 );
 
 CREATE TABLE "patients" (
-    "id" SERIAL PRIMARY KEY  NOT NULL,
+    "id" int   NOT NULL,
     "last_name" TEXT   NOT NULL,
     "first_name" TEXT   NOT NULL,
     "preferred_phone" VARCHAR(15)   NOT NULL,
     "preferred_email" TEXT   NOT NULL,
     "birthday" DATE   NOT NULL,
+    CONSTRAINT "pk_patients" PRIMARY KEY (
+        "id"
+     )
 );
 
 CREATE TABLE "diseases" (
-    "id" SERIAL PRIMARY KEY  NOT NULL,
+    "id" int   NOT NULL,
     "common_name" TEXT   NOT NULL,
     "scientific_name" TEXT   NOT NULL,
+    CONSTRAINT "pk_diseases" PRIMARY KEY (
+        "id"
+     )
 );
 
 CREATE TABLE "diseases_patients" (
-    "id" SERIAL PRIMARY KEY  NOT NULL,
-    "disease_id" INT  REFERENCES diseases  ON DELETE CASCADE,
-    "patient_id" INT  NOT NULL  REFERENCES patients(id),
+    "id" int   NOT NULL,
+    "disease_id" INT   NOT NULL,
+    "patient_id" INT   NOT NULL,
+    CONSTRAINT "pk_diseases_patients" PRIMARY KEY (
+        "id"
+     )
 );
 
 CREATE TABLE "doctors_patients" (
-    "id" SERIAL PRIMARY KEY  NOT NULL,
-    "patient_id" INT  NOT NULL  REFERENCES doctors(id),
-    "doctor_id" INT  NOT NULL  REFERENCES patients(id),
+    "id" int   NOT NULL,
+    "patient_id" INT   NOT NULL,
+    "doctor_id" INT   NOT NULL,
+    CONSTRAINT "pk_doctors_patients" PRIMARY KEY (
+        "id"
+     )
 );
 
+ALTER TABLE "diseases_patients" ADD CONSTRAINT "fk_diseases_patients_disease_id" FOREIGN KEY("disease_id")
+REFERENCES "diseases" ("id");
+
+ALTER TABLE "diseases_patients" ADD CONSTRAINT "fk_diseases_patients_patient_id" FOREIGN KEY("patient_id")
+REFERENCES "patients" ("id");
+
+ALTER TABLE "doctors_patients" ADD CONSTRAINT "fk_doctors_patients_patient_id" FOREIGN KEY("patient_id")
+REFERENCES "patients" ("id");
+
+ALTER TABLE "doctors_patients" ADD CONSTRAINT "fk_doctors_patients_doctor_id" FOREIGN KEY("doctor_id")
+REFERENCES "doctors" ("id");
 
 CREATE INDEX "idx_doctors_last_name"
 ON "doctors" ("last_name");

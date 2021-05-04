@@ -1,30 +1,13 @@
-CREATE TABLE tickets (
-  id SERIAL PRIMARY KEY,
-  pass_id INT REFERENCES passengers(id) NOT NULL,
-  seat TEXT NOT NULL,
-  flight_id INT REFERENCES flights(id) NOT NULL,
-)
+DROP DATABASE IF EXISTS air_traffic;
 
+CREATE DATABASE air_traffic;
+
+\c air_traffic
 
 CREATE TABLE passengers (
   id SERIAL PRIMARY KEY,
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL
-)
-
-CREATE TABLE flights ( 
-  id SERIAL PRIMARY KEY,
-  departure TIMESTAMP NOT NULL,
-  arrival TIMESTAMP NOT NULL,
-  airline_id INT REFERENCES airlines(id),
-  from_airport VARCHAR(3) REFERENCES airports(id),
-  to_airport VARCHAR(3) REFERENCES airports(id)
-);
-
-CREATE TABLE airlines (
-    id SERIAL PRIMARY KEY,
-    airline_name TEXT NOT NULL,
-    primary_hub INT REFERENCES airports(id)
 );
 
 CREATE TABLE airports (
@@ -32,21 +15,118 @@ CREATE TABLE airports (
     airport_city TEXT NOT NULL,
     airport_state_province TEXT NOT NULL,
     airport_country TEXT NOT NULL
-)
+);
+
+CREATE TABLE airlines (
+    id SERIAL PRIMARY KEY,
+    airline_name TEXT NOT NULL,
+    primary_hub VARCHAR(3) REFERENCES airports(id)
+);
+
+CREATE TABLE flights ( 
+  id SERIAL PRIMARY KEY,
+  departure_time TIME NOT NULL,
+  arrival_time TIME NOT NULL,
+  airline_id INT REFERENCES airlines(id),
+  from_airport VARCHAR(3) REFERENCES airports(id),
+  to_airport VARCHAR(3) REFERENCES airports(id),
+  overnight BOOLEAN DEFAULT false
+);
+
+CREATE TABLE tickets (
+  id SERIAL PRIMARY KEY,
+  pass_id INT REFERENCES passengers(id) NOT NULL,
+  departure_date DATE NOT NULL,
+  seat VARCHAR(3),
+  airline_id INT REFERENCES airlines(id) NOT NULL,
+  flight_id INT REFERENCES flights(id) NOT NULL
+);
 
 CREATE INDEX idx_airline_name ON airlines(airline_name);
 CREATE INDEX idx_passenger_last_name ON passengers(last_name);
 
--- INSERT INTO tickets
---   (first_name, last_name, seat, departure, arrival, airline, from_city, from_country, to_city, to_country)
--- VALUES
---   ('Jennifer', 'Finch', '33B', '2018-04-08 09:00:00', '2018-04-08 12:00:00', 'United', 'Washington DC', 'United States', 'Seattle', 'United States'),
---   ('Thadeus', 'Gathercoal', '8A', '2018-12-19 12:45:00', '2018-12-19 16:15:00', 'British Airways', 'Tokyo', 'Japan', 'London', 'United Kingdom'),
---   ('Sonja', 'Pauley', '12F', '2018-01-02 07:00:00', '2018-01-02 08:03:00', 'Delta', 'Los Angeles', 'United States', 'Las Vegas', 'United States'),
---   ('Jennifer', 'Finch', '20A', '2018-04-15 16:50:00', '2018-04-15 21:00:00', 'Delta', 'Seattle', 'United States', 'Mexico City', 'Mexico'),
---   ('Waneta', 'Skeleton', '23D', '2018-08-01 18:30:00', '2018-08-01 21:50:00', 'TUI Fly Belgium', 'Paris', 'France', 'Casablanca', 'Morocco'),
---   ('Thadeus', 'Gathercoal', '18C', '2018-10-31 01:15:00', '2018-10-31 12:55:00', 'Air China', 'Dubai', 'UAE', 'Beijing', 'China'),
---   ('Berkie', 'Wycliff', '9E', '2019-02-06 06:00:00', '2019-02-06 07:47:00', 'United', 'New York', 'United States', 'Charlotte', 'United States'),
---   ('Alvin', 'Leathes', '1A', '2018-12-22 14:42:00', '2018-12-22 15:56:00', 'American Airlines', 'Cedar Rapids', 'United States', 'Chicago', 'United States'),
---   ('Berkie', 'Wycliff', '32B', '2019-02-06 16:28:00', '2019-02-06 19:18:00', 'American Airlines', 'Charlotte', 'United States', 'New Orleans', 'United States'),
---   ('Cory', 'Squibbes', '10D', '2019-01-20 19:30:00', '2019-01-20 22:45:00', 'Avianca Brasil', 'Sao Paolo', 'Brazil', 'Santiago', 'Chile');
+INSERT INTO passengers
+  (first_name, last_name)
+  VALUES
+    ('Jennifer', 'Finch'),
+    ('Thadeus', 'Gathercoal'),
+    ('Sonja', 'Pauley'),
+    ('Waneta', 'Skeleton'),
+    ('Berkie', 'Wycliff'),
+    ('Leathes', 'Alvin'),
+    ('Squibbes', 'Cory');
+
+INSERT INTO airports
+  (id, airport_city, airport_state_province, airport_country)
+  VALUES
+    ('DCA', 'Washington', 'District of Columbia', 'United States of America'),
+    ('SEA', 'Seattle-Tacoma', 'Washington', 'United States of America'),
+    ('HND', 'Tokyo', 'n/a', 'Japan'),
+    ('LHR', 'Longdon', 'England', 'United Kingdom'),
+    ('LAX', 'Los Angeles', 'California', 'United States of America'),
+    ('LAS', 'Las Vegas', 'Nevada', 'United States of America'),
+    ('MEX', 'Mexico City', 'Mexico City', 'Mexico'),
+    ('ORL', 'Paris', 'Ile-de-France', 'France'),
+    ('ORD', 'Chicago', 'Illinois', 'United States of America'),
+    ('CMN', 'Casablanca', 'Casablanca-Settat', 'Morocco'),
+    ('DXB', 'Dubai', 'Dubai', 'United Arab Emirates'),
+    ('PEK', 'Beijing', 'Hebei', 'China'),
+    ('JFK', 'New York', 'New York', 'United States of America'),
+    ('CLT', 'Charlotte', 'South Carolina', 'United States of America'),
+    ('CID', 'Cedar Rapids', 'Iowa', 'United States of America'),
+    ('MSY', 'New Orleans', 'Louisiana', 'United States of America'),
+    ('GRU', 'Sao Paulo', 'Sao Paulo', 'Brazil'),
+    ('SCL', 'Santiago', 'Santiago Province', 'Chile'),
+    ('ATL', 'Atlanta', 'Georgia', 'United States of America'),
+    ('BRU', 'Brussels', 'Brussels', 'Belgium'),
+    ('DFW', 'Dallas-Fort Worth', 'Texas', 'United States of America');
+
+INSERT INTO airlines
+  (airline_name, primary_hub)
+  VALUES
+    ('United', 'ORD'),
+    ('British Airways', 'LHR'),
+    ('Delta', 'ATL'),
+    ('TUI Fly Belgium', 'BRU'),
+    ('Air China', 'PEK'),
+    ('American Airlines', 'DFW'),
+    ('Avianca Brasil', 'SCL');
+
+INSERT INTO flights
+  (from_airport, departure_time, to_airport, arrival_time)
+  VALUES 
+    ('DCA', '09:00:00', 'SEA', '12:00:00'),
+    ('HND', '12:45:00', 'LHR', '16:15:00'),
+    ('LAX', '07:00:00', 'LAS', '08:03:00'),
+    ('SEA', '16:50:00', 'MEX', '21:00:00'),
+    ('ORL', '18:30:00', 'CMN', '21:50:00'),
+    ('DXB', '01:15:00', 'PEK', '12:55:00'),
+    ('JFK', '06:00:00', 'CLT', '07:47:00'),
+    ('CID', '14:42:00', 'ORD', '15:56:00'),
+    ('CLT', '16:28:00', 'MSY', '19:18:00'),
+    ('GRU', '19:30:00', 'SCL', '22:45:00');
+
+ INSERT INTO tickets
+  (pass_id, seat, flight_id, departure_date, airline_id)
+  VALUES 
+    (1, '33B', 1, '2018-04-08', 1),
+    (2, '8A', 2, '2018-12-19', 2),
+    (3, '12F', 3, '2018-01-02', 3),
+    (1, '20A', 4, '2018-04-15', 3),
+    (4, '23D', 5, '2018-08-01', 4),
+    (2, '18C', 6, '2018-10-31', 5),
+    (5, '9E', 7, '2019-02-06', 1),
+    (6, '1A', 8, '2018-12-22', 6),
+    (5, '32B', 9, '2019-02-06', 6),
+    (7, '10D', 10, '2019-01-20', 7);
+
+-- test
+SELECT 
+  passengers.first_name, passengers.last_name, airlines.airline_name, departure_date, flights.from_airport, flights.departure_time, flights.to_airport, flights.arrival_time, seat
+  FROM tickets
+  JOIN passengers
+  ON tickets.pass_id = passengers.id
+  JOIN airlines
+  ON tickets.airline_id = airlines.id
+  JOIN flights
+  ON tickets.flight_id = flights.id;

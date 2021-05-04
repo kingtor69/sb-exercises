@@ -2,12 +2,17 @@
 -- Link to schema: https://app.quickdatabasediagrams.com/#/d/mHCMjC
 -- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
 
+DROP DATABASE IF EXISTS torslist;
+
+CREATE DATABASE torslist;
+
+\c torslist
 
 CREATE TABLE "regions" (
-    "id" SERIAL   NOT NULL,
-    "city" TEXT   NOT NULL,
-    "state_province" TEXT   NOT NULL,
-    "country" TEXT   NOT NULL,
+    "id" SERIAL PRIMARY KEY  NOT NULL,
+    "region_name" TEXT   NOT NULL,
+    "state_province" TEXT,
+    "country" TEXT,
     CONSTRAINT "pk_regions" PRIMARY KEY (
         "id"
      )
@@ -16,26 +21,21 @@ CREATE TABLE "regions" (
 CREATE TABLE "users" (
     "id" SERIAL   NOT NULL,
     "home_region" INT   NOT NULL,
-    "last_name" TEXT   NOT NULL,
-    "first_name" TEXT   NOT NULL,
+    "last_name" TEXT,
+    "first_name" TEXT,
     "username" TEXT   NOT NULL,
-    CONSTRAINT "pk_users" PRIMARY KEY (
-        "id"
-     ),
     CONSTRAINT "uc_users_username" UNIQUE (
         "username"
     )
 );
 
 CREATE TABLE "posts" (
-    "id" SERIAL   NOT NULL,
+    "id" SERIAL PRIMARY KEY  NOT NULL,
     "title" VARCHAR(20)   NOT NULL,
     "text" TEXT   NOT NULL,
     "region_id" INT   NOT NULL,
     "user_id" INT   NOT NULL,
-    CONSTRAINT "pk_posts" PRIMARY KEY (
-        "id"
-     )
+
 );
 
 CREATE TABLE "categories" (
