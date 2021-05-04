@@ -7,7 +7,8 @@
  1. torslist-tor.sql
  2. outer_space-tor.sql
  3. air_traffic-tor.sql
+ 4. hockey_league-tor.sql
 
-
-### I'm still troubleshooting the rest
-I did these on my laptop last night and am in the process of checking the work on my desktop today.
+### I'm still troubleshooting:
+ 1. music-tor.sql
+ 2. med_center-tor.sql
