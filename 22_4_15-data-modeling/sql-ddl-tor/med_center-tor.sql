@@ -35,13 +35,13 @@ CREATE TABLE "diseases" (
 CREATE TABLE "diseases_patients" (
     "id" SERIAL PRIMARY KEY  NOT NULL,
     "disease_id" INT  REFERENCES diseases  ON DELETE CASCADE,
-    "patient_id" INT  NOT NULL  REFERENCES patients,
+    "patient_id" INT  NOT NULL  REFERENCES patients(id),
 );
 
 CREATE TABLE "doctors_patients" (
     "id" SERIAL PRIMARY KEY  NOT NULL,
-    "patient_id" INT  NOT NULL  REFERENCES doctors,
-    "doctor_id" INT  NOT NULL  REFERENCES patients,
+    "patient_id" INT  NOT NULL  REFERENCES doctors(id),
+    "doctor_id" INT  NOT NULL  REFERENCES patients(id),
 );
 
 
