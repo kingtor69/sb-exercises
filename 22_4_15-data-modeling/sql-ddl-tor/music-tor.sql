@@ -7,60 +7,108 @@ CREATE DATABASE music;
 
 \c music
 
+CREATE TABLE artists (
+    id SERIAL PRIMARY KEY,
+    last_or_only_name TEXT NOT NULL,
+    first_name TEXT
+);
+
+CREATE TABLE producers (
+    id SERIAL PRIMARY KEY,
+    last_or_only_name TEXT NOT NULL,
+    first_name TEXT
+);
+
 CREATE TABLE songs (
   id SERIAL PRIMARY KEY,
   song_title TEXT NOT NULL,
   duration_in_seconds INTEGER CHECK (duration_in_seconds > 0),
-  release_date DATE NOT NULL,
-  performances_id INT REFERENCES performances(id) NOT NULL
-);
-
-CREATE TABLE performances (
-    id SERIAL PRIMARY KEY,
-    song_id INT REFERENCES songs(id) NOT NULL,
-    band_id INT REFERENCES bands(id),
-    solo_artist_id INT REFERENCES artists(id),
-    producer_id INT REFERENCES artists(id)
-);
-
-CREATE TABLE artists (
-    id SERIAL PRIMARY KEY,
-    last_or_only_name TEXT NOT NULL,
-    first_name TEXT,
-    alias_id INT REFERENCES artists(id),
-    produces BOOLEAN DEFAULT false
-);
-
-CREATE TABLE bands (
-    id SERIAL PRIMARY KEY,
-    band_name TEXT NOT NULL
+  release_date DATE NOT NULL
 );
 
 CREATE TABLE albums (
     id SERIAL PRIMARY KEY,
     album_name TEXT NOT NULL,
-    release_date DATE NOT NULL,
-    num_tracks INT CHECK (num_tracks > 0)
+    release_date DATE,
+    num_tracks INT CHECK (num_tracks > 0) DEFAULT 13
 );
 
 CREATE TABLE albums_songs (
     id SERIAL PRIMARY KEY,
     album_id INT REFERENCES albums(id),
-    song_id INT REFERENCES song(id),
-    track_num INT CHECK (track_num > 0)
-)
+    song_id INT REFERENCES songs(id),
+    track_num INT CHECK (track_num > 0) DEFAULT 1
+);
 
+CREATE TABLE performances (
+    id SERIAL PRIMARY KEY,
+    song_id INT REFERENCES songs(id) NOT NULL,
+    artist_id INT REFERENCES artists(id) NOT NULL,
+    album_id INT REFERENCES albums(id),
+    producer_id INT REFERENCES artists(id)
+);
 
--- INSERT INTO songs
---   (title, duration_in_seconds, release_date, artists, album, producers)
--- VALUES
---   ('MMMBop', 238, '04-15-1997', '{"Hanson"}', 'Middle of Nowhere', '{"Dust Brothers", "Stephen Lironi"}'),
---   ('Bohemian Rhapsody', 355, '10-31-1975', '{"Queen"}', 'A Night at the Opera', '{"Roy Thomas Baker"}'),
---   ('One Sweet Day', 282, '11-14-1995', '{"Mariah Cary", "Boyz II Men"}', 'Daydream', '{"Walter Afanasieff"}'),
---   ('Shallow', 216, '09-27-2018', '{"Lady Gaga", "Bradley Cooper"}', 'A Star Is Born', '{"Benjamin Rice"}'),
---   ('How You Remind Me', 223, '08-21-2001', '{"Nickelback"}', 'Silver Side Up', '{"Rick Parashar"}'),
---   ('New York State of Mind', 276, '10-20-2009', '{"Jay Z", "Alicia Keys"}', 'The Blueprint 3', '{"Al Shux"}'),
---   ('Dark Horse', 215, '12-17-2013', '{"Katy Perry", "Juicy J"}', 'Prism', '{"Max Martin", "Cirkut"}'),
---   ('Moves Like Jagger', 201, '06-21-2011', '{"Maroon 5", "Christina Aguilera"}', 'Hands All Over', '{"Shellback", "Benny Blanco"}'),
---   ('Complicated', 244, '05-14-2002', '{"Avril Lavigne"}', 'Let Go', '{"The Matrix"}'),
---   ('Say My Name', 240, '11-07-1999', '{"Destiny''s Child"}', 'The Writing''s on the Wall', '{"Darkchild"}');
+CREATE TABLE songs_performers (
+    id SERIAL PRIMARY KEY,
+    song_id INT REFERENCES songs(id) NOT NULL,
+    performance_id INT REFERENCES performances(id) NOT NULL
+);
+
+INSERT INTO songs
+        (song_title, duration_in_seconds, release_date)
+    VALUES
+        ('MMMBop', 238, '04-15-1997'),
+        ('Bohemian Rhapsody', 355, '10-31-1975'),
+        ('One Sweet Day', 282, '11-14-1995'),
+        ('Shallow', 216, '09-27-2018');
+
+INSERT INTO artists
+        (last_or_only_name, first_name)
+    VALUES 
+        ('Hanson', NULL),
+        ('Queen', NULL),
+        ('Cary', 'Mariah'),
+        ('Boyz II Men', NULL),
+        ('Gaga', 'Lady'),
+        ('Cooper', 'Bradley');
+
+INSERT INTO producers
+        (last_or_only_name, first_name)
+    VALUES
+        ('Dust Brothers', NULL),
+        ('Lironi', 'Stephen'),
+        ('Baker', 'Roy Thomas'),
+        ('Afanasieff', 'Walter'),
+        ('Rice', 'Benjamin');
+
+INSERT INTO albums  
+        (album_name)
+    VALUES
+        ('Middle of Nowhere'),
+        ('A Night at the Opera'),
+        ('Daydream'),
+        ('A Star Is Born');
+
+INSERT INTO performances
+        (song_id, artist_id, album_id, producer_id)
+    VALUES
+        (1, 1, 1, 1),
+        (1, 1, 1, 2),
+        (2, 2, 2, 3),
+        (3, 3, 3, 4),
+        (3, 4, 3, 4),
+        (4, 5, 4, 5),
+        (4, 6, 4, 5);
+
+SELECT 
+        artists.last_or_only_name, artists.first_name, producers.last_or_only_name, producers.first_name, songs.song_title, songs.release_date, albums.album_name, songs.duration_in_seconds
+    FROM performances
+    JOIN songs
+    ON performances.song_id = songs.id
+    JOIN artists
+    ON performances.artist_id = artists.id
+    JOIN albums
+    ON performances.album_id = albums.id
+    JOIN producers
+    ON performances.producer_id = producers.id
+    GROUP BY artists.last_or_only_name, artists.first_name, producers.last_or_only_name, producers.first_name, songs.song_title, songs.release_date, albums.album_name, songs.duration_in_seconds;
