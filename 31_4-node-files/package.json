@@ -1,0 +1,15 @@
+{
+  "name": "31_4-node-files",
+  "version": "1.0.0",
+  "description": "Springboard Software Engineering Career Track unit 31.4 exercise",
+  "main": "step1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "31_4-node-files"
+  },
+  "author": "Tor Kingdon",
+  "license": "ISC"
+}
