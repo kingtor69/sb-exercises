@@ -11,5 +11,8 @@
     "url": "31_4-node-files"
   },
   "author": "Tor Kingdon",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
 }
