@@ -1,0 +1,19 @@
+{
+  "name": "31_5-node-testing-markov",
+  "version": "1.0.0",
+  "description": "",
+  "main": "makeText.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sb-exercises/31_5-node-testing-markov.git"
+  },
+  "author": "Tor Kingdon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sb-exercises/31_5-node-testing-markov/issues"
+  },
+  "homepage": "https://github.com/sb-exercises/31_5-node-testing-markov#readme"
+}
