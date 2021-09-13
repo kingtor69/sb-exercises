@@ -60,26 +60,24 @@ app.get('/mode', (req, resp, next) => {
         }
         let nums = req.query.nums.split(',');
         nums.sort();
-        let highest = 0;
-        let count = 0;
-        let modes = "";
+        let highest = 1;
+        let count = 1;
+        let modes = nums[0];
         for (let i=1; i<nums.length; i++) {
-            if (nums[i-1] !== nums [i]) {
+            if (nums[i] === nums[i-1]) {
+                count ++;
+
                 if (count > highest) {
                     highest = count;
-                    modes = `${nums[i]},`;
-                    count = 0;
+                    modes = nums[i];
                 } else if (count === highest) {
-                    modes += `${nums[i]},`;
-                    count = 0;
+                    modes += `,${nums[i]}`
                 };
             } else {
-                count ++;
+                count = 1;
             };
         };
-
-        mode.value = modes.slice(0,-1);
-
+        mode.value = modes;
         return resp.json(mode);
     } catch (e) {
         console.log(e);
