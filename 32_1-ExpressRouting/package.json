@@ -1,0 +1,14 @@
+{
+  "name": "32_1-expressrouting",
+  "version": "1.0.0",
+  "description": "Springboard 32.1 Express Routing Exercises",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tor Kingdon",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
